@@ -1,0 +1,13 @@
+	LEA	R1,1[R0]
+	LOAD	R2,i[R0]
+	LOAD	R3,n[R0]
+while	CMPGT	R4,R3,R2
+	JUMPF	R4,end[R0]
+			;add code here for the inner part of the for loop
+	ADD	R2,R1,R2
+	JUMP	while[R0]	
+end	STORE	R2,i[R0]
+	TRAP	R0,R0,R0
+
+i 	DATA	1
+n	DATA	50

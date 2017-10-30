@@ -1,0 +1,15 @@
+	LEA	R1,1[R0]	;Load constant 1 into register 1
+	LOAD	R2,i[R0]	;Load i into register 2
+	LOAD	R3,n[R0]	;Load n into register 3
+	LOAD	R5,result[R0]	;Load initial value result into register 5
+while	CMPGT	R4,R3,R2	;Store as a boolean value the result of the comparison n>i
+	JUMPF	R4,end[R0]	;Jump to the tag called end if the boolean value is false
+	ADD	R5,R5,R2	;Add i to result and store the resulting value in result
+	ADD	R2,R1,R2	;increment i
+	JUMP	while[R0]	;jump back to the tag called while
+end	STORE	R5,result[R0]	;when the loop is finished store result in memory
+	TRAP	R0,R0,R0	;Stop execution
+
+i 	DATA	1
+n	DATA	10
+result	DATA	0

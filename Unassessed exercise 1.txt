@@ -1,0 +1,20 @@
+	LEA	R1,3[R0]
+	LEA	R2,4[R0]
+	LEA	R3,5[R0]
+	LEA	R4,6[R0]
+	LOAD	R5,x[R0]
+	LOAD	R6,const
+	STORE	R3,a[R0]
+	CMPLT	R7,R5,R6
+	JUMPF	R7,else[R0]
+	STORE	R1,y[R0]
+	JUMP	done[R0]
+else	STORE	R2,z[R0]
+done	STORE	R4,b[R0]	
+
+a 	DATA	0
+x	DATA	10
+y	DATA	0
+z	DATA	0
+b	DATA	0
+const	DATA	10

@@ -1,0 +1,9 @@
+;program to count through 8-bit numbers stored in accumulator A
+;and display them on port B
+
+	ORG	$c000	;Arrange the machine code to begin at location $c000
+loop	INCA		;increment Accumulator A
+	STAA	lights	;send the data in A to port B
+	BRA	loop	;branch back to the beginning of the loop
+
+lights	EQU	$1004	;declare identifier for port B's location in memory

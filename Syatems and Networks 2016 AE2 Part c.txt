@@ -1,0 +1,46 @@
+;program that either counts up or down through the 8-bit numbers depending on the value of a
+;toggle variable. this toggle variable is toggled when in the interrupt service routine.
+
+STACK	EQU	$00FF	;location of the stack in memory
+PIOC	EQU	$1002	;Parallel I/O Control Register
+PORTCL	EQU	$1005	
+lights	EQU	$1004	;location of port b
+IRQ	EQU	$FFF2	;IRQ vector
+RESET	EQU	$FFFE	;RESET vector
+
+
+	ORG	$c000	;arrange the machine code to begin at memory location at $c000
+loop	LDS	#STACK	;initialise the stack
+	LDAB	#%11000000
+	STAB	PIOC	;enable Strobe A
+	CLI		;set the interrupt mask
+	LDY	count	;load the counting up/down toggle (0 if counting down 1 if counting up)
+	BEQ	if	;branch to the decrement instruction if the toggle is 0
+else	INCA		;increment if the toggle is 1
+	BRA	delay	;jump past the decrement instruction
+if	DECA		;decrement instruction
+delay	INX		;beginning of delay loop
+	CPX	dlen	;loop condition check
+	BGT	delay	;branch back to the beginning of the loop if the condition is satisfied
+	LDX	#0	;reset index register X
+	STAA	lights	;store data in A to the memory location for port B
+	BRA	loop	;branch back to the beginning of the program loop
+
+IRQISR	LDY	count	;beginning of the interrupt service routine
+	INY		;increment the toggle
+	STY	count	;store the intermediate value in the memory location
+	LDD	count	;load it into the D register to prepare for the integer division
+	LDX	#2	;prepare a literal integer number 2 in X
+	IDIV		;integer divide D by X
+	STD	count	;store the toggle in the count memory location
+	LDAA	PIOC	
+	LDAA	PORTCL	;clear the STAF bit
+	RTI		;return from the interrupt
+
+	ORG	RESET
+	FDB	$c000	;initialise reset vector
+	ORG	IRQ
+	FDB	IRQISR	;initialise IRQ vector
+	ORG	$0000
+count	RMB	2
+dlen	EQU	50000

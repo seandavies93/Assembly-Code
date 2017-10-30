@@ -1,0 +1,11 @@
+	LOAD	R1,sum[R0]	;Load sum into register 1
+	LOAD	R2,limit[R0]	;Load limit into register 2
+while	CMPGT	R3,R2,R1	;Store as a boolean value the result of the comparison limit>sum
+	JUMPF	R3,end[R0]	;Jump to the tag called end if the boolean value is false
+	ADD	R1,R1,R1	;Add sum to sum and store the resulting value in sum
+	JUMP	while[R0]	;jump back to the tag called while
+end	STORE	R1,sum[R0]	;when the loop is finished store result in memory
+	TRAP	R0,R0,R0	;Stop execution
+
+sum	DATA	1
+limit	DATA	300

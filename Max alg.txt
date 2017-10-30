@@ -1,0 +1,22 @@
+	LOAD	R1,n[R0]
+	LEA	R2,0[R0]
+	LEA	R7,max[R0]
+	LEA	R3,1[R0]
+while	CMPGT	R4,R1,R2
+	JUMPF	R4,end[R0]
+	LOAD	R5,x[R2]
+	CMPGT	R6,R5,R7
+	JUMPF	R6,else[R0]
+	ADD	R7,R5,R0
+else	ADD	R2,R2,R3
+	JUMP	while[R0]
+end	STORE	R7,max[R0]
+	TRAP	R0,R0,R0
+
+max	DATA	0
+x	DATA	2
+	DATA	
+	DATA	
+	DATA	
+	DATA
+	DATA

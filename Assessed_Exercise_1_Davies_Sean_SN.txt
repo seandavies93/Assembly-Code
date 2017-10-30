@@ -1,0 +1,56 @@
+;boolean loopactive=n>i
+;while(loopactive)
+;{
+;	x[i]
+;	if(x[i]>0)
+;	{
+;		negcount++
+;	}
+;	else
+;	{
+;		possum=possum+temp
+;	}
+;	i++
+;}
+;the following block allocates register values and initial values
+
+	LEA	R1,1[R0]	;R1=1
+	LEA	R2,0[R0]	;R2=i
+	LEA	R3,0[R0]	;R3=possum
+	LOAD	R4,n[R0]	;R4=n 
+	LEA	R5,0[R0]	;R5=negcount
+
+;the following block the while loop and if-else clause
+
+while	LOAD	R7,x[R2]	;R7=x[i]
+	CMPGT	R9,R0,R7	;R9=(0>x[i])
+	JUMPT	R9,else[R0]	;jump to the line that increments negcount if x[i] is negative
+	ADD	R3,R3,R7	;possum=possum+x[i]
+	JUMP	done[R0]	;jump past the piece of code that increments negcount
+else	ADD	R5,R5,R1	;negcount=negcount+1
+done	ADD	R2,R1,R2	;i=i+1
+	CMPGT	R6,R4,R2	;R6=(n>i)
+	JUMPT	R6,while[R0]	;jump back to the beginning of the loop if the counter is less than n
+
+;the following stores the final values of possum and negcount upon loop completion
+
+	STORE	R3,possum[R0]	;possum=R3
+	STORE	R5,negcount[R0]	;negcount=R5
+	TRAP	R0,R0,R0	;termination
+
+;data statements
+
+n	DATA	11	;n specifies the number of iterations the loop will go through
+x	DATA	3
+	DATA	-6
+	DATA	27
+	DATA	50
+	DATA	0
+	DATA	-20
+	DATA	-21
+	DATA	19
+	DATA	6
+	DATA	4
+	DATA	-10
+possum	DATA	0
+negcount	DATA	0

@@ -1,0 +1,25 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+
+
+
+                           ORG     $c000
+  C000 4C          loop    INCA
+  C001 08          delay   INX
+  C002 BC 13 88            CPX     dlen
+  C005 2E FA               BGT     delay
+  C007 DE 00               LDX     0
+  C009 B7 10 04            STAA    lights
+  C00C 20 F2               BRA     loop
+
+                   lights  EQU     $1004
+                           ORG     $0000
+                   dlen    RMB     2
+                   dlen    EQU     5000
+
+  Symbol Table 
+
+  DELAY              C001
+  LIGHTS             1004
+  DLEN               1388
+  LOOP               C000

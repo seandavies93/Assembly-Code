@@ -1,0 +1,15 @@
+;counting loop that displays the 8-bit numbers to port B slowly due to the delay loop
+
+	ORG	$c000	;Arrange the machine code to begin at location $c000
+loop	INCA		;increment Accumulator A
+delay	INX		;increment index register X
+	CPX	dlen	;compare the index register X to the max iteration number
+	BGT	delay	;condition for remaining in the loop is checked
+	LDX	#0	;index register X reset to zero
+	STAA	lights	;send the data in A to port B
+	BRA	loop	;branch back to the beginning of the loop
+
+lights	EQU	$1004	;declare identifier for port B's location in memory
+	ORG	$0000
+dlen	RMB	2
+dlen	EQU	5000	;declare delay loop iteration number
